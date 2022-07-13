@@ -17,4 +17,9 @@ class Image extends Model
     protected $hidden = ["user_id", "image_path"];
 
     protected $fillable = ["user_id", "name", "image_path"];
+
+    // User relationship (Image has one User)
+    public function user() {
+        return $this->belongsTo("App\User");
+    }
 }

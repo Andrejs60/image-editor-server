@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,21 +16,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Public routes
+Route::post("/register", [AuthController::class, "register"]);
+Route::post("/login", [AuthController::class, "login"]);
 
-// All Images
-Route::get("/images", [ImageController::class, "index"]);
+// Protected routes
+// Route::group(["middleware" => ["auth:sanctum"]] ,function () {
+    // All Images
+    Route::middleware('auth:sanctum')->get("/images", [ImageController::class, "index"]);
 
-// Single Image
-Route::get("/images/{image}", [ImageController::class, "show"]);
+    // Single Image
+    Route::middleware('auth:sanctum')->get("/images/{image}", [ImageController::class, "show"]);
 
-// Fetch Image
-Route::get("/images/{image}/fetch", [ImageController::class, "fetchImage"]);
+    // Fetch Image
+    Route::middleware('auth:sanctum')->get("/images/{image}/fetch", [ImageController::class, "fetchImage"]);
 
-// Store Image
-Route::post("/images", [ImageController::class, "store"]);
+    // Store Image
+    Route::middleware('auth:sanctum')->post("/images", [ImageController::class, "store"]);
+
+    // Logout
+    Route::middleware('auth:sanctum')->post("/logout", [AuthController::class, "logout"]);
+// });
+
+
+
 
 
 
